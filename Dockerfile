@@ -8,8 +8,8 @@ RUN go mod download
 
 COPY *.go ./
 RUN go build -o /docker-gs-ping
-RUN go install github.com/gin-gonic/gin
 RUN go get github.com/gin-gonic/gin
+RUN go install github.com/gin-gonic/gin
 
 EXPOSE 8080
 
