@@ -1,16 +1,9 @@
 FROM golang:1.16-alpine
-
+RUN apk update && apk add gcc git
 WORKDIR /app
-
-COPY go.mod ./
-COPY go.sum ./
-RUN go mod download
-
-COPY *.go ./
-RUN go build -o /docker-gs-ping
-RUN go get github.com/gin-gonic/gin
-RUN go install github.com/gin-gonic/gin
-
-EXPOSE 8080
-
-CMD [ "/docker-gs-ping" ]
+COPY go.mod .
+COPY . .
+RUN go build ./...
+RUN go test ./...
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .
+CMD ["./app"]
